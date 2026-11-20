@@ -1,16 +1,19 @@
 local harpoon = require("harpoon")
 
 -- REQUIRED
-harpoon:setup()
+harpoon:setup({})
 -- REQUIRED
 
 -- basic telescope configuration
 local conf = require("telescope.config").values
 local function toggle_telescope(harpoon_files)
     local file_paths = {}
-    for _, item in ipairs(harpoon_files.items) do
-        table.insert(file_paths, item.value)
+    for _, item in pairs(harpoon_files.items) do
+        if item then
+            table.insert(file_paths, item.value)
+        end
     end
+    -- vim.keymap.set("n", "<leader>hr", remove_file, { desc = "Remove file from harpoon" })
 
     require("telescope.pickers").new({}, {
         prompt_title = "Harpoon",
@@ -22,14 +25,9 @@ local function toggle_telescope(harpoon_files)
     }):find()
 end
 
-local function remove_file()
-    local state = require("telescope.actions.state")
-    local selected_entry = state.get_selected_entry()
-    harpoon:list():remove(selected_entry)
-end
-
 vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
-vim.keymap.set("n", "<leader>hr", remove_file, { desc = "Remove file from harpoon" })
+vim.keymap.set("n", "<leader>hr", function() harpoon:list():remove() end)
+
 vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end, { desc = "Open harpoon window" })
 
 vim.keymap.set("n", "<C-j>", function() harpoon:list():select(1) end)

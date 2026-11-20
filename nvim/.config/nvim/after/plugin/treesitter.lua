@@ -6,6 +6,7 @@ ts.install({
     "c",
     "css",
     "lua",
+    "odin",
     "vim",
     "vimdoc",
     "query",
@@ -19,5 +20,5 @@ ts.setup {
         desc = "Try to enable tree-sitter syntax highlighting",
         pattern = '*',
         callback = function() pcall(function() vim.treesitter.start() end) end,
-    })
+    }),
 }

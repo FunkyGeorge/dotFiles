@@ -19,7 +19,16 @@ return {
             "saghen/blink.cmp",
         },
         config = function()
-            local capabilities = require("blink.cmp")
+            local capabilities = {
+                textDocument = {
+                    foldingRange = {
+                        dynamicRegistration = false,
+                        lineFoldingOnly = true
+                    }
+                }
+            }
+
+            capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
             vim.lsp.config('lua_ls', {
                 capabilities = capabilities,
                 settings = {
